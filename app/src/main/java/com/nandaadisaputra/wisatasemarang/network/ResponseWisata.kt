@@ -17,3 +17,8 @@ data class ResponseWisata(
     val data: List<TempatWisata>, // List data tempat wisata
     val pagination: Pagination    // Informasi pagination untuk navigasi data
 )
+data class ResponseTambahWisata(
+    val success: Boolean,
+    val message: String,
+    val data: TempatWisata
+)

@@ -1,6 +1,8 @@
 package com.nandaadisaputra.wisatasemarang.network
 
 // Import library Retrofit untuk mendefinisikan endpoint API
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import retrofit2.Response
 import retrofit2.http.*
 
@@ -33,4 +35,22 @@ interface ApiService {
     suspend fun searchTempatWisata(
         @Query("q") keyword: String // Parameter untuk kata kunci pencarian
     ): Response<ResponseWisata>
+
+    /**
+     * Menambahkan tempat wisata baru.
+     *
+     * @param nama Nama tempat wisata.
+     * @param lokasi Lokasi tempat wisata.
+     * @param deskripsi Deskripsi tempat wisata.
+     * @param gambar File gambar tempat wisata.
+     * @return Response dari server setelah proses penyimpanan.
+     */
+    @Multipart
+    @POST("backend/create.php")
+    suspend fun addTempatWisata(
+        @Part("nama") nama: RequestBody,
+        @Part("lokasi") lokasi: RequestBody,
+        @Part("deskripsi") deskripsi: RequestBody,
+        @Part gambar: MultipartBody.Part
+    ): Response<ResponseTambahWisata>
 }
