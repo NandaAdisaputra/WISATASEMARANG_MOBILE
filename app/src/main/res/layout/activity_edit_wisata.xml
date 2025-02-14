@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp"
+    android:background="@android:color/white">
+
+    <!-- Gambar Wisata -->
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/cardImage"
+        android:layout_width="0dp"
+        android:layout_height="220dp"
+        app:cardCornerRadius="12dp"
+        app:cardElevation="6dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginBottom="16dp">
+
+        <ImageView
+            android:id="@+id/imgWisataEdit"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:contentDescription="@string/select_image"
+            android:scaleType="centerCrop"/>
+    </com.google.android.material.card.MaterialCardView>
+
+    <!-- Button Pilih Gambar -->
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnPilihGambar"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/select_image"
+        app:cornerRadius="12dp"
+        app:backgroundTint="?attr/colorPrimary"
+        android:textColor="@android:color/white"
+        app:layout_constraintTop_toBottomOf="@id/cardImage"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginBottom="16dp"/>
+
+    <!-- Input Nama Wisata -->
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/inputNama"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="@string/input_nama"
+        app:boxStrokeColor="?attr/colorPrimary"
+        app:layout_constraintTop_toBottomOf="@id/btnPilihGambar"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/etNamaEdit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textAutoComplete|text"/>
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <!-- Input Lokasi dengan AutoComplete (Ukuran disamakan dengan input nama) -->
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/inputLokasi"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="@string/input_lokasi"
+        app:boxStrokeColor="?attr/colorPrimary"
+        app:layout_constraintTop_toBottomOf="@id/inputNama"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/etLokasiEdit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textAutoComplete|text"/>
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <!-- Input Deskripsi -->
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/inputDeskripsi"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="@string/input_deskripsi"
+        app:boxStrokeColor="?attr/colorPrimary"
+        app:layout_constraintTop_toBottomOf="@id/inputLokasi"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/etDeskripsiEdit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="120dp"
+            android:gravity="top"
+            android:inputType="textMultiLine"/>
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <!-- Button Update -->
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnUpdate"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/update"
+        app:cornerRadius="12dp"
+        app:backgroundTint="?attr/colorPrimary"
+        android:textColor="@android:color/white"
+        app:layout_constraintTop_toBottomOf="@id/inputDeskripsi"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="16dp"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
