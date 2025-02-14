@@ -1,5 +1,6 @@
 package com.nandaadisaputra.wisatasemarang.adapter
 
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
@@ -8,67 +9,96 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.nandaadisaputra.wisatasemarang.databinding.ItemWisataBinding
 import com.nandaadisaputra.wisatasemarang.model.TempatWisata
+import com.nandaadisaputra.wisatasemarang.ui.detail.DetailWisataActivity
 
 /**
  * Adapter untuk RecyclerView yang menampilkan daftar tempat wisata.
- * Menggunakan ListAdapter agar lebih efisien dalam memperbarui data.
+ * Menggunakan ListAdapter untuk mengelola perubahan data secara efisien.
  */
 class TempatWisataAdapter : ListAdapter<TempatWisata, TempatWisataAdapter.WisataViewHolder>(
-    DiffCallback() // Digunakan untuk membandingkan data agar RecyclerView hanya memperbarui item yang berubah
+    DiffCallback()
 ) {
 
     /**
-     * Membuat instance ViewHolder baru ketika RecyclerView membutuhkannya.
+     * Membuat ViewHolder baru saat RecyclerView membutuhkannya.
+     *
+     * @param parent ViewGroup induk tempat ViewHolder akan ditambahkan.
+     * @param viewType Jenis tampilan (tidak digunakan di sini karena hanya ada satu jenis tampilan).
+     * @return WisataViewHolder yang sudah terhubung dengan tampilan item.
      */
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): WisataViewHolder {
-        // Inflate layout item wisata menggunakan View Binding
         val binding = ItemWisataBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return WisataViewHolder(binding)
     }
 
     /**
-     * Mengikat (bind) data dari daftar tempat wisata ke tampilan yang sesuai.
+     * Mengikat data ke dalam ViewHolder berdasarkan posisi dalam daftar.
+     *
+     * @param holder WisataViewHolder yang akan diperbarui.
+     * @param position Posisi item dalam daftar.
      */
     override fun onBindViewHolder(holder: WisataViewHolder, position: Int) {
-        val tempatWisata = getItem(position) // Mengambil item berdasarkan posisi
-        holder.bind(tempatWisata) // Memanggil fungsi bind untuk menampilkan data
+        val tempatWisata = getItem(position) // Mendapatkan item berdasarkan posisi
+        holder.bind(tempatWisata) // Memasukkan data ke dalam tampilan
     }
 
     /**
-     * ViewHolder untuk menampilkan data tempat wisata pada item RecyclerView.
+     * Memperbarui daftar data dengan item terbaru berada di paling atas.
+     *
+     * @param newList Daftar terbaru dari tempat wisata.
+     */
+    fun updateData(newList: List<TempatWisata>) {
+        submitList(newList.reversed()) // Membalik daftar agar item terbaru berada di atas
+    }
+
+    /**
+     * ViewHolder untuk menampilkan data tempat wisata di dalam RecyclerView.
      */
     class WisataViewHolder(private val binding: ItemWisataBinding) : RecyclerView.ViewHolder(binding.root) {
 
         /**
-         * Menampilkan data tempat wisata ke dalam tampilan item.
+         * Mengikat data tempat wisata ke tampilan yang sesuai.
+         *
+         * @param tempatWisata Objek TempatWisata yang akan ditampilkan.
          */
         fun bind(tempatWisata: TempatWisata) {
-            binding.tvNama.text = tempatWisata.nama // Menampilkan nama tempat wisata
-            binding.tvLokasi.text = tempatWisata.lokasi // Menampilkan lokasi tempat wisata
+            // Menetapkan nama dan lokasi tempat wisata ke TextView
+            binding.tvNama.text = tempatWisata.nama
+            binding.tvLokasi.text = tempatWisata.lokasi
 
-            // Menampilkan gambar jika tersedia
+            // Menampilkan gambar tempat wisata menggunakan Glide jika URL gambar tersedia
             if (!tempatWisata.gambar.isNullOrEmpty()) {
                 Glide.with(binding.root.context)
-                    .load(tempatWisata.gambar) // Memuat gambar dari URL menggunakan Glide
-                    .into(binding.imgWisata) // Menampilkan gambar ke dalam ImageView
+                    .load(tempatWisata.gambar)
+                    .into(binding.imgWisata)
+            }
+
+            // Menambahkan event klik pada item untuk membuka DetailWisataActivity
+            binding.root.setOnClickListener {
+                val context = binding.root.context
+                val intent = Intent(context, DetailWisataActivity::class.java).apply {
+                    putExtra("WISATA_ID", tempatWisata.id) // Mengirimkan ID tempat wisata ke DetailWisataActivity
+                }
+                context.startActivity(intent) // Memulai aktivitas baru untuk menampilkan detail wisata
             }
         }
     }
 
     /**
-     * Kelas DiffCallback untuk membandingkan data lama dan baru agar RecyclerView hanya memperbarui item yang berubah.
+     * DiffCallback digunakan untuk menentukan apakah ada perubahan pada daftar
+     * guna meningkatkan efisiensi pembaruan RecyclerView.
      */
     class DiffCallback : DiffUtil.ItemCallback<TempatWisata>() {
 
         /**
-         * Memeriksa apakah dua item memiliki ID yang sama.
+         * Memeriksa apakah dua objek tempat wisata adalah item yang sama berdasarkan ID.
          */
         override fun areItemsTheSame(oldItem: TempatWisata, newItem: TempatWisata): Boolean {
             return oldItem.id == newItem.id
         }
 
         /**
-         * Memeriksa apakah isi dari dua item sama.
+         * Memeriksa apakah isi dari dua objek tempat wisata sama.
          */
         override fun areContentsTheSame(oldItem: TempatWisata, newItem: TempatWisata): Boolean {
             return oldItem == newItem

@@ -53,6 +53,7 @@ dependencies {
     implementation(libs.okhttp.logging.interceptor)
     implementation(libs.androidx.recyclerview)
     implementation(libs.glide)
+    implementation(libs.androidx.swiperefreshlayout)
 
 
     testImplementation(libs.junit)

@@ -1,3 +1,19 @@
 <resources>
     <string name="app_name">WISATASEMARANG</string>
+    <string name="edit">Edit</string>
+    <string name="add">Tambah</string>
+    <string name="delete">Hapus</string>
+    <string name="search">Cari tempat wisata</string>
+    <string name="tourist_pictures">gambar_wisata</string>
+    <string name="select_image">Pilih Gambar</string>
+    <string name="update">Update</string>
+    <string name="input_nama">Masukkan Nama Wisata</string>
+    <string name="input_lokasi">Masukkan Lokasi Wisata</string>
+    <string name="input_deskripsi">Masukkan Deskripsi Wisata</string>
+    <string name="upload_image">Upload Image</string>
+    <string name="preview_image">Preview Gambar</string>
+    <string name="image">Gambar Wisata</string>
+    <string name="nama">Nama Wisata</string>
+    <string name="lokasi">Lokasi Wisata</string>
+    <string name="deskripsi">Deskripsi Wisata</string>
 </resources>

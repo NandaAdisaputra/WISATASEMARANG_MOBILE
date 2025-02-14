@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <paths>
+    <!-- Menentukan path untuk menyimpan file gambar di direktori eksternal aplikasi -->
     <external-files-path name="pictures" path="Pictures/" />
 </paths>

@@ -18,12 +18,12 @@ object RetrofitClient {
      */
     val retrofit: Retrofit = Retrofit.Builder()
         .baseUrl(BASE_URL) // Menentukan URL dasar dari API
-        .addConverterFactory(GsonConverterFactory.create()) // Menambahkan konverter JSON
+        .addConverterFactory(GsonConverterFactory.create()) // Menambahkan konverter JSON agar respons dapat diparsing ke objek Kotlin
         .build()
 
     /**
      * Instance ApiService yang digunakan untuk memanggil endpoint API.
      * Retrofit akan secara otomatis mengimplementasikan interface ApiService.
      */
-    val apiService: ApiService = retrofit.create(ApiService::class.java)
+    val apiService: ApiService = retrofit.create(ApiService::class.java) // Membuat instance ApiService dari interface
 }

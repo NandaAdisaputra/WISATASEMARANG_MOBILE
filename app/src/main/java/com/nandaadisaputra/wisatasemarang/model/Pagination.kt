@@ -1,4 +1,4 @@
-package com.nandaadisaputra.wisatasemarang.network
+package com.nandaadisaputra.wisatasemarang.model
 
 /**
  * Data class Pagination digunakan untuk menyimpan informasi tentang sistem paginasi

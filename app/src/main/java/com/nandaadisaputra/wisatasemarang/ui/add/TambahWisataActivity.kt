@@ -1,6 +1,5 @@
-package com.nandaadisaputra.wisatasemarang.ui
+package com.nandaadisaputra.wisatasemarang.ui.add
 
-import TambahWisataViewModel
 import android.app.Activity
 import android.content.Intent
 import android.net.Uri
@@ -37,7 +36,6 @@ class TambahWisataActivity : AppCompatActivity() {
     @RequiresExtension(extension = Build.VERSION_CODES.S, version = 7)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        // Inisialisasi binding
         binding = ActivityAddWisataBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
@@ -48,13 +46,12 @@ class TambahWisataActivity : AppCompatActivity() {
 
         // Event listener untuk tombol simpan
         binding.btnSave.setOnClickListener {
-            // Validasi jika gambar belum dipilih
             if (imageUri == null) {
                 Toast.makeText(this, "Gambar tidak ditemukan!", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
-            // Mengubah input teks menjadi RequestBody untuk dikirim ke server
+            // Konversi input teks menjadi RequestBody untuk dikirim ke server
             val nama = RequestBody.create("text/plain".toMediaTypeOrNull(), binding.etNama.text.toString())
             val lokasi = RequestBody.create("text/plain".toMediaTypeOrNull(), binding.etLokasi.text.toString())
             val deskripsi = RequestBody.create("text/plain".toMediaTypeOrNull(), binding.etDeskripsi.text.toString())
@@ -62,13 +59,12 @@ class TambahWisataActivity : AppCompatActivity() {
             // Mendapatkan file dari URI yang dipilih
             val file = File(currentPhotoPath ?: getRealPathFromURI(imageUri!!))
 
-            // Validasi jika file gambar tidak ditemukan
             if (!file.exists()) {
                 Toast.makeText(this, "File gambar tidak ditemukan!", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
-            // Konversi file gambar menjadi MultipartBody untuk dikirim ke server
+            // Konversi file menjadi MultipartBody untuk dikirim ke server
             val requestFile = RequestBody.create("image/*".toMediaTypeOrNull(), file)
             val gambar = MultipartBody.Part.createFormData("gambar", file.name, requestFile)
 
@@ -76,7 +72,12 @@ class TambahWisataActivity : AppCompatActivity() {
             viewModel.tambahWisata(nama, lokasi, deskripsi, gambar) { success, message ->
                 Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
                 if (success) {
-                    finish() // Menutup activity jika berhasil
+                    val resultIntent = Intent().apply {
+                        putExtra("status", "success")
+                        putExtra("message", "Wisata berhasil ditambahkan")
+                    }
+                    setResult(Activity.RESULT_OK, resultIntent)
+                    finish()
                 }
             }
         }
@@ -85,11 +86,10 @@ class TambahWisataActivity : AppCompatActivity() {
     // Fungsi untuk memilih gambar dari galeri atau kamera
     private fun pilihGambar() {
         val intentGallery = Intent(Intent.ACTION_GET_CONTENT).apply {
-            type = "image/*" // Menentukan hanya file gambar yang dapat dipilih
+            type = "image/*"
         }
         val intentCamera = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
 
-        // Membuat file untuk menyimpan gambar dari kamera
         val photoFile: File? = try {
             createImageFile()
         } catch (ex: IOException) {
@@ -97,7 +97,6 @@ class TambahWisataActivity : AppCompatActivity() {
             null
         }
 
-        // Jika file berhasil dibuat, set URI untuk menyimpan gambar dari kamera
         photoFile?.also {
             imageUri = FileProvider.getUriForFile(
                 this,
@@ -107,7 +106,6 @@ class TambahWisataActivity : AppCompatActivity() {
             intentCamera.putExtra(MediaStore.EXTRA_OUTPUT, imageUri)
         }
 
-        // Menampilkan pilihan antara galeri dan kamera
         val chooser = Intent.createChooser(intentGallery, "Pilih Gambar")
         chooser.putExtra(Intent.EXTRA_INITIAL_INTENTS, arrayOf(intentCamera))
         startActivityForResult(chooser, 100)
@@ -118,12 +116,10 @@ class TambahWisataActivity : AppCompatActivity() {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == 100 && resultCode == Activity.RESULT_OK) {
             if (data?.data != null) {
-                // Jika gambar dipilih dari galeri
                 imageUri = data.data
                 binding.ivPreview.setImageURI(imageUri)
                 currentPhotoPath = getRealPathFromURI(imageUri!!)
             } else if (currentPhotoPath != null) {
-                // Jika gambar diambil dari kamera
                 imageUri = Uri.fromFile(File(currentPhotoPath))
                 binding.ivPreview.setImageURI(imageUri)
             }

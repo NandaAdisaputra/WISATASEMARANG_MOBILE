@@ -3,10 +3,10 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <!-- Izin untuk akses internet -->
-    <uses-permission android:name="android.permission.INTERNET"/>
-
+    <uses-permission android:name="android.permission.INTERNET" />
+    <!-- android:usesCleartextTraffic="true"
+    Mengizinkan penggunaan HTTP tanpa enkripsi (non-HTTPS) -->
     <application
-        android:usesCleartextTraffic="true"
         android:allowBackup="true"
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@mipmap/ic_launcher"
@@ -14,36 +14,49 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.WISATASEMARANG"
+        android:usesCleartextTraffic="true"
         tools:targetApi="31">
 
-        <!-- Pastikan file data_extraction_rules.xml ada atau hapus jika tidak digunakan -->
+        <!-- Metadata untuk pengaturan backup data aplikasi -->
+        <activity
+            android:name=".ui.edit.EditWisataActivity"
+            android:exported="true" />  <!-- Jika file tidak ada, abaikan kesalahan ini -->
+
+        <!-- Aktivitas untuk mengedit data wisata -->
+        <activity
+            android:name=".ui.add.TambahWisataActivity"
+            android:exported="true" />  <!-- Harus diekspor jika digunakan oleh komponen lain di luar aplikasi -->
+
+        <!-- Aktivitas untuk menambahkan tempat wisata -->
+        <activity
+            android:name=".ui.detail.DetailWisataActivity"
+            android:exported="true" />
+
+        <!-- Aktivitas untuk melihat detail tempat wisata -->
+        <activity
+            android:name=".ui.read.MainActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />  <!-- Menjadikan ini sebagai aktivitas utama -->
+                <category android:name="android.intent.category.LAUNCHER" />  <!-- Memasukkannya dalam daftar aplikasi di launcher -->
+            </intent-filter>
+        </activity>
+
+        <!-- Aktivitas utama yang pertama kali dijalankan saat aplikasi dibuka -->
         <meta-data
             android:name="android.content.APP_DATA_EXTRACTION_RULES"
             android:resource="@xml/data_extraction_rules"
-            tools:ignore="MissingResource"/>
+            tools:ignore="MissingResource" />
 
-        <!-- Aktivitas Tambah Wisata -->
-        <activity
-            android:name=".ui.MainActivity"
-            android:exported="true"/>
-
-        <!-- Aktivitas Utama -->
-        <activity
-            android:name=".ui.TambahWisataActivity"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+        <!-- Provider untuk mengelola akses file dalam aplikasi, terutama untuk berbagi file antar aplikasi -->
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="com.nandaadisaputra.wisatasemarang.provider"
             android:exported="false"
-            android:grantUriPermissions="true">
+            android:grantUriPermissions="true">  <!-- Mengizinkan aplikasi lain mengakses file tertentu dengan izin -->
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/file_paths" />
+                android:resource="@xml/file_paths" />  <!-- Menunjukkan lokasi file yang bisa diakses -->
         </provider>
 
     </application>
